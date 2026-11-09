@@ -21,7 +21,7 @@ int main()
 {
 	char sym;
 	int s1, s2, s3;
-	int x;
+	double x;
 	int state;
 	setlocale(LC_ALL, "RUS");
 	state = 1;
@@ -76,15 +76,43 @@ int main()
 		}
 		printf("\n");
 		printf("Введите количество N - ");
-		scanf("%d", &N);
+		scanf(" %d", &N);
 		printf("\n");
+		if (N < 1)
+		{
+			printf("N не может быть меньше 1 так как это число суммируемых");
+			return 0;
+		}
 		printf("Введите точность Эпсилон - ");
-		scanf("%lf", &eps);
+		scanf(" %lf", &eps);
 		printf("\n");
-		printf("Результаты вычислений\n");
-		printf("1) Стандартная функция:       %.15f\n", arcctg_math(x));
-		printf("2) Ряд (число членов N = %d):  %.15f (Отклонение: %e)\n", N, arcctg_n(x,N), fabs(arcctg_math(x) - arcctg_n(x, N)));
-		printf("3) Ряд (точность eps = %e): %.15f (Отклонение: %e)\n", eps, arcctg_eps(x, eps), fabs(arcctg_n(x, N) - arcctg_eps(x, eps)));
+		if (eps <= 0)
+		{
+			printf("Точность не может быть нулевой или меньше");
+			return 0;
+		}
+		int choice_func;
+		printf("Введите, какую функциб хотите вывести: \n1) Стандартная функция\n2) Ряд (число членов N)\n3) Ряд (точность eps)\n");
+		printf("Выбор: ");
+		scanf("%d", &choice_func);
+		switch (choice_func)
+		{
+		case 1:
+			printf("Результаты вычислений\n");
+			printf("Стандартная функция:       %.15f\n", arcctg_math(x));
+			break;
+		case 2:
+			printf("Результаты вычислений\n");
+			printf("|&3c|%20s|%25s|\n", "N", "Arcctg_N", "Отклонение");
+			for (int i = 1; i < N + 1; i++)
+			{
+				printf("|%3d|%20.15f|%30e|\n", N, arcctg_n(x, N), fabs(arcctg_math(x) - arcctg_n(x, N)));
+			}
+			break;
+		case 3:
+			printf("Ряд (точность eps = %e): %.15f (Отклонение: %e)\n", eps, arcctg_eps(x, eps), fabs(arcctg_n(x, N) - arcctg_eps(x, eps)));
+			break;
+		}
 		printf("желаете повторить задание 2?(1 - да, остальные числа - нет):");
 		scanf("%d", &state);
 		printf("\n");
@@ -122,7 +150,7 @@ int main()
 		printf("\n");
 		printf("желаете повторить задание 3?(1 - да, остальные числа - нет):");
 		scanf("%d", &state);
-	} while (state = 1);
+	} while (state == 1);
 	return 0;
 }
 
